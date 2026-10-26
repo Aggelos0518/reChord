@@ -91,4 +91,9 @@ Film posters are generated in CSS (no copyrighted artwork is used). Artist and f
 
 ---
 
+## Authors
+* Euthimis Popolis - 3230168
+* Vasilis Nikolaou - 3230141
+* Angelos Oikonomou - 3230146
+
 *reChord is a student project and is not affiliated with Spotify.*
