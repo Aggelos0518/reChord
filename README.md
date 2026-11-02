@@ -2,11 +2,7 @@
 
 **Movies that sound like you.**
 
-The name plays on *chord* (music) and *record* (film), and the logo is a clapperboard whose clapper is a guitar neck.
-
 reChord is a mobile app that connects to your Spotify account, measures how your music *feels* (energy, mood, atmosphere, the hours you listen) and recommends films with the same emotional signature. It also forecasts how your music will feel in the coming days, so the right films are ready before you ask.
-
-This repository contains the **interactive mockup**: a clickable preview that looks and behaves like the real app, but does not actually work yet.
 
 ---
 
