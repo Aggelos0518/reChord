@@ -31,6 +31,8 @@
   --ok:#86D9AE;
   --rain:#8FB4CC;   /* forecast: melancholic */
   --calm:#7FCBB6;   /* forecast: calm */
+  --paper:#F2E6D6;  /* ticket paper */
+  --ink:#1D1416;    /* ticket ink */
   --grad:linear-gradient(90deg,var(--dusk),var(--tungsten));
 
   --font-display:'Big Shoulders Display','Big Shoulders','Oswald','Arial Narrow',sans-serif;
@@ -329,7 +331,7 @@ ol,ul{margin:0;padding:0;list-style:none}
 .tab-head .sub{color:var(--fg-2);font-size:14px;max-width:36ch}
 
 .rise{animation:rise .6s var(--ease) both;animation-delay:var(--d,0s)}
-.no-anim .rise,.no-anim .rise *{animation:none!important}
+.no-anim .rise{animation:none!important}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
 /* ---------- Home ---------- */
@@ -393,37 +395,94 @@ ol,ul{margin:0;padding:0;list-style:none}
 .fc-title{font-size:13px;font-weight:600;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .fc-meta{font-size:12px;color:var(--fg-3);margin-top:-3px}
 
-/* ---------- Tonight (swipe deck) ---------- */
-.deck{position:relative;height:452px;margin-top:-6px}
-.dcard{position:absolute;inset:0;border-radius:26px;overflow:hidden;background:var(--surface);touch-action:none;user-select:none;-webkit-user-select:none;transition:transform .45s var(--ease),opacity .45s var(--ease);box-shadow:0 24px 50px -20px rgba(0,0,0,.7);cursor:grab}
-.dcard .poster{position:absolute;inset:0;border-radius:0}
-.dcard.pos-1{transform:translateY(14px) scale(.95);opacity:.85;pointer-events:none}
-.dcard.pos-2{transform:translateY(28px) scale(.9);opacity:.5;pointer-events:none}
-.dcard.pos-3{transform:translateY(28px) scale(.9);opacity:0;pointer-events:none}
-.dcard.dragging{transition:none;cursor:grabbing}
-.dcard-shade{position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(4,10,12,.25) 0%,transparent 25%,transparent 38%,rgba(4,10,12,.92) 78%)}
-.dcard-pct{position:absolute;top:16px;left:16px;z-index:3;font-family:var(--font-mono);font-size:12px;font-weight:500;padding:6px 10px;border-radius:999px;background:rgba(6,17,20,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.dcard-pct b{color:var(--tungsten);font-weight:500}
-.dcard-body{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:20px;display:flex;flex-direction:column;gap:8px}
-.dcard-body h2{font-family:var(--font-display);font-weight:800;font-size:40px;line-height:.88;text-transform:uppercase;text-wrap:balance}
-.dcard-body .why{color:rgba(234,242,238,.82);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.stamp{position:absolute;top:28px;z-index:4;font-family:var(--font-display);font-weight:900;font-size:34px;letter-spacing:.06em;text-transform:uppercase;padding:2px 12px;border:3px solid;border-radius:10px;opacity:0;pointer-events:none}
-.stamp-save{right:20px;color:var(--tungsten);transform:rotate(10deg)}
-.stamp-pass{left:20px;color:var(--fg);transform:rotate(-10deg)}
-.deck-actions{display:flex;justify-content:center;align-items:center;gap:18px}
-.round{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);background:var(--surface);transition:transform .15s var(--ease),background .2s}
-.round:active{transform:scale(.9)}
-.round svg{width:26px;height:26px}
-.round.info{width:46px;height:46px}
-.round.info svg{width:20px;height:20px}
-.round.save{background:var(--grad);color:var(--on-accent);border:0;box-shadow:0 12px 30px -10px rgba(247,142,122,.7)}
-.round.pass{color:var(--fg-2)}
-.deck-signal{text-align:center;font-size:13px;color:var(--fg-3);margin-top:-8px;min-height:20px}
-.deck-signal b{color:var(--blend);font-weight:600}
-.deck-empty{height:100%;border-radius:26px;border:1.5px dashed var(--line-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:28px}
-.deck-empty h2{font-family:var(--font-serif);font-weight:400;font-size:30px;line-height:1.05}
-.deck-empty p{color:var(--fg-2);max-width:28ch}
-.deck-empty .mark,.empty .mark{width:64px;height:56px}
+/* ---------- Tonight (three records + ticket) ---------- */
+#tab-tonight{gap:18px}
+.tab>*{flex-shrink:0}
+.tn-mood{display:flex;align-items:center;gap:10px;align-self:flex-start;max-width:100%;padding:8px 14px 8px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:13px;color:var(--fg-2);transition:border-color .2s}
+.tn-mood:hover{border-color:var(--line-2)}
+.tn-mood .micon{width:24px;height:24px}
+.tn-mood b{color:var(--fg);font-weight:600}
+.tn-mood>svg:last-child{width:14px;height:14px;color:var(--fg-3);flex:none}
+.crate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.crate-item{display:grid;grid-template-columns:32px 1fr;align-items:center;gap:8px;padding:6px 8px 6px 6px;border-radius:14px;border:1px solid var(--line);background:var(--surface);transition:border-color .2s,background .2s;min-width:0}
+.crate-item:hover{border-color:var(--line-2)}
+.crate-item.is-on{border-color:color-mix(in srgb,var(--c) 70%,transparent);background:color-mix(in srgb,var(--c) 12%,var(--surface))}
+.crate-thumb{width:32px;height:32px;display:block}
+.crate-thumb .poster{border-radius:4px}
+.crate-text{display:flex;flex-direction:column;gap:3px;min-width:0}
+.crate-role{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3);white-space:nowrap}
+.crate-item.is-on .crate-role{color:var(--c)}
+.crate-pct{font-family:var(--font-display);font-weight:800;font-size:19px;line-height:1;font-variant-numeric:tabular-nums}
+
+.rec-wrap{container-type:inline-size}
+.stage-rec{position:relative;height:56cqw}
+.sleeve{position:absolute;left:0;top:2cqw;width:52cqw;height:52cqw;z-index:2;cursor:pointer;border-radius:3px;box-shadow:0 18px 40px -12px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.06)}
+.sleeve .poster{border-radius:3px}
+.sleeve-wear{position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:3px;background:radial-gradient(circle closest-side,transparent 0 86%,rgba(255,255,255,.08) 87% 88.5%,transparent 89.5%),linear-gradient(118deg,rgba(255,255,255,.12),transparent 32%)}
+.sticker{position:absolute;z-index:4;top:-2.5cqw;right:-3cqw;width:16cqw;height:16cqw;border-radius:50%;display:grid;place-items:center;text-align:center;background:var(--c);color:var(--on-accent);font-family:var(--font-display);font-weight:800;font-size:3.6cqw;line-height:.92;text-transform:uppercase;transform:rotate(12deg);box-shadow:0 6px 14px rgba(0,0,0,.35)}
+.disc{position:absolute;z-index:1;left:37cqw;top:3cqw;width:50cqw;height:50cqw;border-radius:50%;box-shadow:0 12px 30px rgba(0,0,0,.55)}
+.disc-spin{position:absolute;inset:0;border-radius:50%;animation:spin 5s linear infinite;
+  background:
+    radial-gradient(circle at 50% 35.2%,#F4E8DC 0 1.05cqw,transparent 1.3cqw),
+    radial-gradient(circle closest-side,#F4E8DC 0 26%,var(--lab) 26.5% 33%,#09090B 33.5% 36%,transparent 36.5%),
+    conic-gradient(from 0deg,rgba(255,255,255,.05),transparent 22%,rgba(255,255,255,.035) 50%,transparent 74%,rgba(255,255,255,.05)),
+    repeating-radial-gradient(circle closest-side,#111115 0 1.6px,#1C1C22 1.6px 3px)}
+.disc::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;box-shadow:inset 0 0 0 2px #08080A;
+  background:conic-gradient(from 210deg,transparent 0 8%,rgba(255,255,255,.10) 14%,transparent 22% 58%,rgba(255,255,255,.07) 64%,transparent 72%);
+  -webkit-mask:radial-gradient(circle closest-side,transparent 0 36%,#000 37%);mask:radial-gradient(circle closest-side,transparent 0 36%,#000 37%)}
+.disc-label{position:absolute;inset:0;z-index:2;display:grid;place-items:center;color:var(--on-accent);text-align:center;pointer-events:none}
+.disc-label span{display:flex;flex-direction:column;align-items:center;line-height:1}
+.disc-label b{font-family:var(--font-display);font-weight:800;font-size:4.4cqw;font-variant-numeric:tabular-nums}
+.disc-label small{font-family:var(--font-mono);font-size:1.9cqw;letter-spacing:.14em;text-transform:uppercase;margin-top:1px}
+.tonearm{position:absolute;z-index:3;left:92.35cqw;top:.35cqw;width:5.3cqw;height:39.7cqw;overflow:visible;transform-origin:50% 6.667%;transform:rotate(-2deg);transition:transform .7s var(--ease)}
+.tonearm .ta-arm{stroke:var(--fg-2);stroke-width:2.6;stroke-linecap:round;fill:none}
+.tonearm .ta-base{fill:var(--raised);stroke:var(--line-2);stroke-width:1.5}
+.tonearm .ta-dot{fill:var(--fg-2)}
+.tonearm .ta-head{fill:var(--fg-2)}
+.stage-rec.enter .sleeve{animation:sleeveIn .55s var(--ease) both}
+.stage-rec.enter .disc{animation:discOut .75s var(--ease) .3s both}
+@keyframes sleeveIn{from{opacity:0;transform:translateX(-6cqw) rotate(-4deg)}to{opacity:1;transform:none}}
+@keyframes discOut{from{transform:translateX(-36cqw) rotate(-90deg)}to{transform:none}}
+.stage-rec.leave .disc{transform:translateX(-36cqw);opacity:0;transition:transform .3s var(--ease),opacity .2s .22s}
+.stage-rec.leave .sleeve{transform:translateY(14cqw) rotate(-8deg);opacity:0;transition:transform .35s var(--ease) .18s,opacity .3s .18s}
+.stage-rec.playing .tonearm{transform:rotate(32deg)}
+.stage-rec.playing .disc-spin{animation-duration:1.1s}
+.tn-info{display:flex;flex-direction:column;gap:6px}
+.tn-role{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--fg-2)}
+.tn-role .eyebrow{color:var(--c)}
+.tn-title{font-size:15px;color:var(--fg-2)}
+.tn-title strong{color:var(--fg);font-weight:600}
+.tn-actions{display:flex;flex-direction:column;gap:8px}
+.tn-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tn-row .btn{flex-direction:column;height:60px;gap:4px;padding:0 6px;font-size:12.5px;font-weight:500}
+.tn-row.two{grid-template-columns:1fr 1fr}
+.tn-row.two .btn{flex-direction:row;height:48px;font-size:14px;font-weight:600}
+.tn-left{font-size:12px;color:var(--fg-3);text-align:center}
+
+.ticket{position:relative;border-radius:22px;background:var(--paper);color:var(--ink);overflow:hidden;box-shadow:0 24px 50px -24px rgba(0,0,0,.8)}
+.ticket.print{animation:print 1s var(--ease) both}
+@keyframes print{from{clip-path:inset(0 0 100% 0 round 22px);transform:translateY(-10px)}to{clip-path:inset(0 0 0 0 round 22px);transform:none}}
+.tk-top{position:relative;height:118px}
+.tk-top .poster{border-radius:0}
+.tk-top::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 25%,var(--paper))}
+.tk-head{position:absolute;top:14px;left:16px;right:16px;z-index:2;display:flex;justify-content:space-between;align-items:center}
+.tk-admit{font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:4px 8px;border-radius:6px;background:var(--paper);color:var(--ink)}
+.tk-brand{font-family:var(--font-display);font-weight:800;font-size:20px;color:#FFF7EC;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+.tk-brand i{font-family:var(--font-serif);font-style:italic;font-weight:400;font-size:1.08em;padding-right:.03em}
+.tk-body{position:relative;z-index:2;margin-top:-26px;padding:0 18px 4px;display:flex;flex-direction:column;gap:4px}
+.tk-title{font-family:var(--font-display);font-weight:900;font-size:40px;line-height:.88;text-transform:uppercase;text-wrap:balance;color:var(--ink)}
+.tk-sub{font-size:13px;color:color-mix(in srgb,var(--ink) 65%,transparent)}
+.tk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 10px;margin:12px 0 0;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--ink) 14%,transparent)}
+.tk-grid div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tk-grid dt{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb,var(--ink) 55%,transparent)}
+.tk-grid dd{margin:0;font-weight:600;font-size:15px;font-variant-numeric:tabular-nums}
+.tk-perf{position:relative;height:0;margin:16px 0 0;border-top:2px dashed color-mix(in srgb,var(--ink) 25%,transparent)}
+.tk-perf::before,.tk-perf::after{content:"";position:absolute;top:-13px;width:24px;height:24px;border-radius:50%;background:var(--bg)}
+.tk-perf::before{left:-12px}
+.tk-perf::after{right:-12px}
+.tk-stub{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 18px 16px}
+.tk-barcode{height:36px;flex:1;max-width:180px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 8px,var(--ink) 8px 11px,transparent 11px 12px,var(--ink) 12px 13px,transparent 13px 16px)}
+.tk-code{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;color:color-mix(in srgb,var(--ink) 70%,transparent);text-align:right}
 
 /* ---------- Tune (mixer) ---------- */
 .presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:-8px}
@@ -712,7 +771,7 @@ ol,ul{margin:0;padding:0;list-style:none}
       <button data-jump="dna"><span>Sound DNA</span><span>your music, measured</span></button>
       <button data-jump="translate"><span>Music → film</span><span>the translation</span></button>
       <button data-jump="home"><span>For You</span><span>recommendations</span></button>
-      <button data-jump="tonight"><span>Tonight</span><span>swipe to train</span></button>
+      <button data-jump="tonight"><span>Tonight</span><span>pick one of three</span></button>
       <button data-jump="tune"><span>Tune</span><span>live re-ranking</span></button>
       <button data-jump="forecast"><span>Mood forecast</span><span>the week ahead</span></button>
       <button data-jump="detail"><span>Film detail</span><span>why it matches</span></button>
@@ -889,7 +948,15 @@ const MOCK = {
     { title:'Sounds like Massive Attack',   ids:['drive','br2049','mood','skin'] },
     { title:'Off your usual track',         ids:['paris','lobster','skin','perfect','eeaao','budapest','madmax','pilgrim'], sub:'Less like you, on purpose. This is how you discover new things.' },
   ],
-  tonight: ['lost','drive','moon','eternal','arrival','br2049','aftersun','mood','paris','skin'],
+  // Tonight: three kinds of pick. queue = the film shown first, then the swaps for "Not tonight".
+  tonight: {
+    start: '22:00',
+    slots: [
+      { id:'hit',  label:'The hit',  short:'hit',      sticker:'The<br>hit',   color:'var(--tungsten)', note:'Your closest match tonight', queue:['lost','her','moon'] },
+      { id:'deep', label:'Deep cut', short:'deep cut', sticker:'Deep<br>cut',  color:'var(--dusk)',     note:'Less known, still very you', queue:['aftersun','mood','pastlives'] },
+      { id:'wild', label:'Wildcard', short:'wildcard', sticker:'Wild<br>card', color:'var(--calm)',     note:'A step outside your usual',  queue:['lobster','paris','skin'] },
+    ],
+  },
 
   // Mood Forecast: sample output of the (future) predictive model.
   // energy / mood are 0–100; curve = predicted values for each hour in HOURS.
@@ -937,8 +1004,9 @@ const MockAPI = {
   },
   /** Recommender → best film for the song playing now. TODO */
   pickForTrack(track) { return rec(track.pick, track.pct); },
-  /** Recommender → films for the Tonight swipe deck, best first. TODO */
-  tonight() { return MOCK.tonight.slice(); },
+  /** Recommender → tonight's three picks (the hit, a deep cut, a wildcard)
+      and the films that replace each one after "Not tonight". TODO */
+  tonight() { return MOCK.tonight; },
   /** Recommender → ranking for a mood mix from the Tune screen. TODO
       Mock behaviour only: returns the fixed list of the preset whose
       fader positions are closest, so the screen reacts while you drag. */
@@ -951,7 +1019,7 @@ const MockAPI = {
   },
   /** Recommender → match score of one film (0–100). TODO */
   match(id) { return FILM[id].match; },
-  /** Feedback (save, pass, rating) that the real recommender would learn from.
+  /** Feedback (save, not tonight, watch, rating) that the real recommender would learn from.
       TODO: send it to your model. Mock: it is only counted. */
   feedback(id, kind) { state.signals++; dirty.profile = true; },
   /** Predictive model → mood forecast for the next 7 days. TODO: replace with your predictive model. */
@@ -967,8 +1035,8 @@ function freshState() {
     screen:'welcome', tab:'home', scale:1,
     tune:{ ...PRESETS[0].v }, preset:'usual', forecast:null, fday:0,
     saved:['her','pastlives'], ratings:{}, passed:[], signals:0,
-    nowIdx:0, deck:null, deckStats:{ saved:0, passed:0 },
-    savedSort:'match', settings:{ live:true, explain:true, rated:false, notify:true },
+    nowIdx:0, tn:{ slot:0, idx:[0,0,0], pick:null, justPicked:false },
+    savedSort:'match', settings:{ live:true, explain:true, rated:false, notify:true, remind:true },
     detail:null, onboarded:false,
   };
   dirty = { home:true, tonight:true, tune:true, saved:true, profile:true };
@@ -980,6 +1048,10 @@ freshState();
    ========================================================= */
 const ICON = {
   sparkle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9z"/><path d="M18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg>',
+  disc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.4"/><path d="M12 6.3a5.7 5.7 0 0 1 5.7 5.7"/></svg>',
+  swap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5a7.5 7.5 0 0 1 13.6-3L20 9"/><path d="M20 4.5V9h-4.5"/><path d="M19.5 14.5a7.5 7.5 0 0 1-13.6 3L4 15"/><path d="M4 19.5V15h4.5"/></svg>',
+  chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>',
+  playFill:'<svg viewBox="0 0 24 24" style="fill:currentColor"><path d="M7 4.5l13 7.5-13 7.5z"/></svg>',
   cards:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="7" y="3.5" width="12" height="16" rx="2.5"/><path d="M4.5 7v11.5A2.5 2.5 0 0 0 7 21h9"/></svg>',
   faders:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 4v16M12 4v16M18 4v16"/><rect x="3.5" y="13" width="5" height="3.5" rx="1.2" style="fill:var(--bg)"/><rect x="9.5" y="6.5" width="5" height="3.5" rx="1.2" style="fill:var(--bg)"/><rect x="15.5" y="10.5" width="5" height="3.5" rx="1.2" style="fill:var(--bg)"/></svg>',
   bookmark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/></svg>',
@@ -1338,7 +1410,7 @@ ENTER.translate = el => {
 /* ---------- App shell ---------- */
 const TABS = [
   { id:'home', label:'For You', icon:ICON.sparkle },
-  { id:'tonight', label:'Tonight', icon:ICON.cards },
+  { id:'tonight', label:'Tonight', icon:ICON.disc },
   { id:'tune', label:'Tune', icon:ICON.faders },
   { id:'saved', label:'Saved', icon:ICON.bookmark },
   { id:'profile', label:'You', icon:ICON.user },
@@ -1580,125 +1652,149 @@ function closeForecast() {
   updateJump();
 }
 
-/* ---------- Tonight (swipe deck) ---------- */
-function buildDeck() {
-  const exclude = new Set([...state.saved, ...Object.keys(state.ratings)]);
-  const all = MockAPI.tonight();
-  let pool = all.filter(id => !exclude.has(id) && !state.passed.includes(id));
-  if (pool.length < 4) pool = all.filter(id => !exclude.has(id));
-  state.deck = pool.slice(0, 8);
-  state.deckStats = { saved:0, passed:0 };
+/* ---------- Tonight: three records, pick one, get a ticket ---------- */
+const clockAdd = (hhmm, min) => {
+  const [h, m] = hhmm.split(':').map(Number), t = ((h * 60 + m + min) % 1440 + 1440) % 1440;
+  return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`;
+};
+function tnFilm(i) {
+  const q = MockAPI.tonight().slots[i].queue;
+  return FILM[q[state.tn.idx[i] % q.length]];
+}
+function crateHTML() {
+  return MockAPI.tonight().slots.map((s, j) => {
+    const f = tnFilm(j), on = j === state.tn.slot;
+    return `<button class="crate-item${on ? ' is-on' : ''}" style="--c:${s.color}" data-tnslot="${j}" aria-pressed="${on}" aria-label="${s.label}: ${esc(f.title)}, ${MockAPI.match(f.id)}% match">
+      <span class="crate-thumb">${posterHTML(f, { title:false })}</span>
+      <span class="crate-text"><span class="crate-role">${s.label}</span><span class="crate-pct">${MockAPI.match(f.id)}%</span></span>
+    </button>`;
+  }).join('');
+}
+function stageHTML(f, slot) {
+  return `<div class="disc" style="--lab:${f.pal[1]}" aria-hidden="true"><div class="disc-spin"></div><div class="disc-label"><span><b>${MockAPI.match(f.id)}%</b><small>match</small></span></div></div>
+    <div class="sleeve" role="button" tabindex="0" data-film="${f.id}" aria-label="${esc(f.title)}, ${MockAPI.match(f.id)}% match. Open details">${posterHTML(f)}<span class="sleeve-wear"></span><span class="sticker" style="--c:${slot.color}" aria-hidden="true">${slot.sticker}</span></div>
+    <svg class="tonearm" viewBox="0 0 20 150" aria-hidden="true"><path class="ta-arm" d="M10 10 L10 128"/><rect class="ta-head" x="5" y="124" width="10" height="20" rx="2"/><circle class="ta-base" cx="10" cy="10" r="8"/><circle class="ta-dot" cx="10" cy="10" r="2.5"/></svg>`;
+}
+function tnInfoHTML(f, slot) {
+  return `<p class="tn-role" style="--c:${slot.color}"><span class="eyebrow">${slot.label}</span><span>${slot.note}</span></p>
+    <p class="tn-title"><strong>${esc(f.title)}</strong> · ${f.year} · ${rt(f.min)} · ends ${clockAdd(MockAPI.tonight().start, f.min)}</p>
+    <p class="why">${esc(f.why)}</p>`;
+}
+function tnSaveHTML(id) {
+  return state.saved.includes(id) ? `${ICON.check}Saved` : `${ICON.heart}Save`;
+}
+function tnLeftHTML(slot, i) {
+  return `“Not tonight” swaps in another ${slot.short} · <span class="mono">${state.tn.idx[i] % slot.queue.length + 1} of ${slot.queue.length}</span>`;
 }
 RENDER.tonight = el => {
-  if (!state.deck) buildDeck();
+  const tn = MockAPI.tonight(), day = MockAPI.forecast().days[0];
+  if (state.tn.pick) return renderTicket(el, tn, day);
+  const first = !el.dataset.rendered;
+  const i = state.tn.slot, slot = tn.slots[i], f = tnFilm(i);
   el.innerHTML = `
     <header class="tab-head rise">
-      <p class="eyebrow">Tonight · ${state.deck.length ? state.deck.length + ' left' : 'done'}</p>
-      <h1>Swipe through tonight’s set</h1>
-      <p class="sub">Right to save, left to pass. In the full app, every swipe teaches reChord a little more about you.</p>
+      <p class="eyebrow">Tonight · ${day.d} ${day.date}</p>
+      <h1>Pick tonight’s film</h1>
     </header>
-    <div class="deck rise" id="deck"></div>
-    <div class="deck-actions rise" id="deckActions">
-      <button class="round pass" data-act="deck-pass" aria-label="Pass">${ICON.x}</button>
-      <button class="round info" data-act="deck-info" aria-label="Film details">${ICON.info}</button>
-      <button class="round save" data-act="deck-save" aria-label="Save to watchlist">${ICON.heart}</button>
-    </div>
-    <p class="deck-signal" id="deckSignal">${signalText()}</p>`;
-  drawDeck();
+    <button class="tn-mood rise" data-act="open-forecast" data-day="0">${moodIcon(day.kind)}<span><b>${day.title} tonight</b> · press play at ${tn.start}</span>${ICON.chev}</button>
+    <div class="crate rise" id="crate" role="group" aria-label="Tonight’s three picks">${crateHTML()}</div>
+    <div class="rec-wrap rise"><div class="stage-rec${first && !reduceMotion ? ' enter' : ''}" id="stageRec">${stageHTML(f, slot)}</div></div>
+    <div class="tn-info rise" id="tnInfo">${tnInfoHTML(f, slot)}</div>
+    <div class="tn-actions rise">
+      <button class="btn btn-primary btn-lg" data-act="tn-watch">${ICON.playFill}Watch this tonight</button>
+      <div class="tn-row">
+        <button class="btn btn-ghost" data-act="tn-swap">${ICON.swap}Not tonight</button>
+        <button class="btn btn-ghost" data-act="tn-details">${ICON.info}Details</button>
+        <button class="btn btn-ghost" data-act="tn-save" id="tnSave">${tnSaveHTML(f.id)}</button>
+      </div>
+      <p class="tn-left" id="tnLeft">${tnLeftHTML(slot, i)}</p>
+    </div>`;
 };
-function signalText() {
-  const { saved, passed } = state.deckStats;
-  if (!saved && !passed) return 'Drag a card, or use the buttons.';
-  return `<b>${saved + passed} new signal${saved + passed > 1 ? 's' : ''}</b> · saved for your recommender`;
+function tnRefresh(anim) {
+  const tn = MockAPI.tonight(), i = state.tn.slot, slot = tn.slots[i], f = tnFilm(i);
+  const stage = $('#stageRec'); if (!stage) return;
+  stage.className = 'stage-rec';
+  stage.innerHTML = stageHTML(f, slot);
+  if (anim && !reduceMotion) { stage.offsetHeight; stage.classList.add('enter'); }
+  const info = $('#tnInfo');
+  info.innerHTML = tnInfoHTML(f, slot);
+  if (anim) { info.classList.remove('swap-in'); info.offsetHeight; info.classList.add('swap-in'); }
+  $('#crate').innerHTML = crateHTML();
+  $('#tnSave').innerHTML = tnSaveHTML(f.id);
+  $('#tnLeft').innerHTML = tnLeftHTML(slot, i);
 }
-function deckCardHTML(id, pos) {
-  const f = FILM[id], s = MockAPI.match(id);
-  return `<article class="dcard pos-${pos}" data-id="${id}" aria-label="${esc(f.title)}, ${s}% match">
-    ${posterHTML(f, { title:false })}
-    <div class="dcard-shade"></div>
-    <span class="stamp stamp-save">Save</span><span class="stamp stamp-pass">Pass</span>
-    <span class="dcard-pct"><b>${s}%</b> match</span>
-    <div class="dcard-body">
-      <h2>${esc(f.title)}</h2>
-      <p class="meta">${f.year} · ${esc(f.dir)} · ${rt(f.min)}</p>
-      <p class="why">${esc(f.why)}</p>
-      <div class="tags">${f.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-    </div>
-  </article>`;
+let tnBusy = false;
+function tnSelect(j) {
+  if (tnBusy || j === state.tn.slot) return;
+  state.tn.slot = j;
+  tnRefresh(true);
 }
-function drawDeck() {
-  const deck = $('#deck'), actions = $('#deckActions');
-  if (!deck) return;
-  if (!state.deck.length) {
-    const { saved, passed } = state.deckStats;
-    deck.innerHTML = `<div class="deck-empty">${MARK}<h2>That’s tonight’s set.</h2>
-      <p>You saved ${saved} and passed on ${passed}. In the full app, your next picks would reflect it.</p>
-      <button class="btn btn-primary" data-act="deck-reset">Deal a new set</button></div>`;
-    actions.style.visibility = 'hidden';
-    return;
-  }
-  actions.style.visibility = '';
-  const ids = state.deck.slice(0, 4);
-  deck.innerHTML = ids.map((id, i) => deckCardHTML(id, i)).reverse().join('');
-  bindDrag($('.dcard.pos-0', deck));
-}
-function bindDrag(card) {
-  if (!card) return;
-  let sx = 0, sy = 0, dx = 0, dy = 0, down = false, moved = false;
-  const save = $('.stamp-save', card), pass = $('.stamp-pass', card);
-  card.addEventListener('pointerdown', e => {
-    down = true; moved = false; sx = e.clientX; sy = e.clientY; dx = dy = 0;
-    card.setPointerCapture(e.pointerId); card.classList.add('dragging');
-  });
-  card.addEventListener('pointermove', e => {
-    if (!down) return;
-    dx = (e.clientX - sx) / state.scale; dy = (e.clientY - sy) / state.scale;
-    if (Math.abs(dx) + Math.abs(dy) > 6) moved = true;
-    card.style.transform = `translate(${dx}px, ${dy * .25}px) rotate(${dx * .05}deg)`;
-    save.style.opacity = clamp(dx / 90, 0, 1);
-    pass.style.opacity = clamp(-dx / 90, 0, 1);
-  });
-  const end = () => {
-    if (!down) return;
-    down = false; card.classList.remove('dragging');
-    if (!moved) { card.style.transform = ''; openDetail(card.dataset.id); return; }
-    if (dx > 100) decide('save', card, dx);
-    else if (dx < -100) decide('pass', card, dx);
-    else { card.style.transform = ''; save.style.opacity = pass.style.opacity = 0; }
-  };
-  card.addEventListener('pointerup', end);
-  card.addEventListener('pointercancel', end);
-}
-function decide(kind, card, dx) {
-  card = card || $('#deck .dcard.pos-0');
-  if (!card || card.dataset.leaving) return;
-  card.dataset.leaving = '1';
-  const id = card.dataset.id, f = FILM[id];
-  const dir = kind === 'save' ? 1 : -1;
-  $(kind === 'save' ? '.stamp-save' : '.stamp-pass', card).style.opacity = 1;
-  card.style.transition = 'transform .45s var(--ease), opacity .45s';
-  card.style.transform = `translate(${dir * 520}px, ${-40}px) rotate(${dir * 24}deg)`;
-  card.style.opacity = 0;
-  if (kind === 'save') { if (!state.saved.includes(id)) state.saved.push(id); MockAPI.feedback(id, 'save'); state.deckStats.saved++; dirty.saved = true; }
-  else { if (!state.passed.includes(id)) state.passed.push(id); MockAPI.feedback(id, 'pass'); state.deckStats.passed++; }
-  state.deck = state.deck.filter(x => x !== id);
-  // promote the rest of the stack
-  $$('#deck .dcard').forEach(c => {
-    if (c === card) return;
-    const m = c.className.match(/pos-(\d)/); if (!m) return;
-    const p = Math.max(0, +m[1] - 1);
-    c.className = `dcard pos-${p}`;
-  });
-  const sig = $('#deckSignal'); if (sig) sig.innerHTML = signalText();
-  const eb = $('#tab-tonight .tab-head .eyebrow'); if (eb) eb.textContent = `Tonight · ${state.deck.length ? state.deck.length + ' left' : 'done'}`;
+function tnSwap() {
+  if (tnBusy) return;
+  const i = state.tn.slot, f = tnFilm(i);
+  MockAPI.feedback(f.id, 'not-tonight');
+  tnBusy = true;
+  $('#stageRec').classList.remove('enter');
+  $('#stageRec').classList.add('leave');
   setTimeout(() => {
-    card.remove();
-    const deck = $('#deck');
-    if (!deck) return;
-    const nextId = state.deck[3];
-    if (nextId && !$(`.dcard[data-id="${nextId}"]`, deck)) deck.insertAdjacentHTML('afterbegin', deckCardHTML(nextId, 3));
-    if (!state.deck.length) drawDeck(); else bindDrag($('.dcard.pos-0', deck));
-  }, 420);
+    state.tn.idx[i]++;
+    tnRefresh(true);
+    tnBusy = false;
+    toast('Noted. Not in the mood for that one tonight', ICON.swap);
+  }, reduceMotion ? 0 : 520);
+}
+function tnWatch() {
+  if (tnBusy) return;
+  const f = tnFilm(state.tn.slot);
+  MockAPI.feedback(f.id, 'watch-tonight');
+  tnBusy = true;
+  $('#stageRec').classList.add('playing');
+  setTimeout(() => {
+    tnBusy = false;
+    state.tn.pick = f.id; state.tn.justPicked = true;
+    const el = $('#tab-tonight');
+    RENDER.tonight(el);
+    el.scrollTo({ top:0 });
+  }, reduceMotion ? 0 : 1150);
+}
+function renderTicket(el, tn, day) {
+  const f = FILM[state.tn.pick], end = clockAdd(tn.start, f.min), remind = clockAdd(tn.start, -10);
+  el.innerHTML = `
+    <header class="tab-head rise">
+      <p class="eyebrow">Tonight · ${day.d} ${day.date}</p>
+      <h1>Tonight is set</h1>
+      <p class="sub">Press play at ${tn.start}. Here’s everything for the night.</p>
+    </header>
+    <article class="ticket${state.tn.justPicked && !reduceMotion ? ' print' : ''}" aria-label="Your ticket for ${esc(f.title)}, starts ${tn.start}, ends ${end}">
+      <div class="tk-top">${posterHTML(f, { title:false })}
+        <div class="tk-head"><span class="tk-admit">Admit one</span><span class="tk-brand"><i>re</i>Chord</span></div>
+      </div>
+      <div class="tk-body">
+        <h2 class="tk-title">${esc(f.title)}</h2>
+        <p class="tk-sub">${f.year} · ${esc(f.dir)}</p>
+        <dl class="tk-grid">
+          <div><dt>Date</dt><dd>${day.d} ${day.date}</dd></div>
+          <div><dt>Starts</dt><dd>${tn.start}</dd></div>
+          <div><dt>Ends</dt><dd>${end}</dd></div>
+          <div><dt>Screen</dt><dd>Living room</dd></div>
+          <div><dt>Seat</dt><dd>Sofa</dd></div>
+          <div><dt>Match</dt><dd>${MockAPI.match(f.id)}%</dd></div>
+        </dl>
+      </div>
+      <div class="tk-perf" aria-hidden="true"></div>
+      <div class="tk-stub"><span class="tk-barcode" aria-hidden="true"></span><span class="tk-code">RC·${day.date.replace(' ', '').toUpperCase()}<br>${f.id.toUpperCase()}</span></div>
+    </article>
+    <section class="d-block rise">
+      <div class="mix-head"><h2 class="section-label">Warm-up mix</h2><button class="text-btn" data-act="mix-spotify">Save mix to Spotify</button></div>
+      <p class="note">Four songs from your library to play while you get ready.</p>
+      <ol class="mix">${mixFor(f).map((m, i) => `<li><span class="mono">${i + 1}</span><div><strong>${esc(m.t)}</strong><span class="muted">${m.a}</span></div></li>`).join('')}</ol>
+    </section>
+    <div class="settings rise">${settingHTML('remind', `Remind me at ${remind}`, 'One notification before the film starts')}</div>
+    <div class="tn-row two rise">
+      <button class="btn btn-ghost" data-film="${f.id}">${ICON.info}Film details</button>
+      <button class="btn btn-ghost" data-act="tn-change">${ICON.swap}Change pick</button>
+    </div>`;
+  state.tn.justPicked = false;
 }
 
 /* ---------- Tune (mixer) ---------- */
@@ -1854,7 +1950,7 @@ RENDER.saved = el => {
           <span class="fc-poster">${posterHTML(f)}<span class="badge">${s}%</span></span>
           <span class="fc-title">${esc(f.title)}</span><span class="fc-meta">${f.year} · ${rt(f.min)}</span>
         </button>`).join('')}</div>`
-    : `<div class="empty rise">${MARK}<h2>Nothing saved yet</h2><p>Swipe right in Tonight, or tap the heart on any film.</p><button class="btn btn-primary" data-go-tab="tonight">Open Tonight</button></div>`}`;
+    : `<div class="empty rise">${MARK}<h2>Nothing saved yet</h2><p>Tap the heart on any film to keep it here for another night.</p><button class="btn btn-primary" data-go-tab="tonight">Open Tonight</button></div>`}`;
 };
 
 /* ---------- Profile ---------- */
@@ -2013,15 +2109,11 @@ function refreshVisibleTab() {
   if (state.screen !== 'app') return;
   if (dirty[state.tab]) setTab(state.tab);
 }
-function removeFromDeck(id) {
-  if (state.deck && state.deck.includes(id)) { state.deck = state.deck.filter(x => x !== id); dirty.tonight = true; }
-}
 function toggleSave(id) {
   const i = state.saved.indexOf(id), f = FILM[id];
   if (i >= 0) { state.saved.splice(i, 1); toast('Removed from your watchlist', ICON.x); }
   else { state.saved.push(id); MockAPI.feedback(id, 'save'); toast('Saved to your watchlist', ICON.heart); }
-  dirty.saved = dirty.profile = true;
-  removeFromDeck(id);
+  dirty.saved = dirty.profile = dirty.tonight = true;
   const saved = state.saved.includes(id);
   $$('#detail [data-act="toggle-save"]').forEach(b => {
     if (b.classList.contains('icon-btn')) { b.classList.toggle('is-on', saved); b.setAttribute('aria-pressed', saved); b.setAttribute('aria-label', saved ? 'Remove from watchlist' : 'Save to watchlist'); }
@@ -2044,12 +2136,12 @@ function rateSheet(id) {
 document.addEventListener('click', e => {
   const t = e.target.closest('button, [data-film]');
   if (!t) return;
-  if (t.closest('.dcard')) return; // the deck handles its own taps
-  const { act, go, goTab, film, preset, sort, setting, rate, jump, fday } = t.dataset;
+  const { act, go, goTab, film, preset, sort, setting, rate, jump, fday, tnslot } = t.dataset;
   if (jump) return doJump(jump);
   if (go) { closeDetail(); closeForecast(); closeSheet(); return show(go); }
   if (goTab) { closeDetail(); closeForecast(); return setTab(goTab); }
   if (fday) return selectForecastDay(+fday);
+  if (tnslot) return tnSelect(+tnslot);
   if (film) return openDetail(film);
   if (preset) return applyPreset(preset);
   if (sort) { state.savedSort = sort; dirty.saved = true; return setTab('saved'); }
@@ -2058,7 +2150,6 @@ document.addEventListener('click', e => {
     const f = FILM[t.dataset.id];
     state.ratings[f.id] = rate;
     MockAPI.feedback(f.id, 'rating:' + rate);
-    removeFromDeck(f.id);
     if (!state.detail) refreshVisibleTab();
     closeSheet();
     toast(rate === 'love' ? 'Noted. More like this coming up' : rate === 'ok' ? 'Got it. Thanks for rating' : 'Got it. Fewer films like this');
@@ -2088,15 +2179,21 @@ document.addEventListener('click', e => {
     case 'seen-it': return rateSheet(t.dataset.id);
     case 'not-for-me': {
       const f = FILM[t.dataset.id];
-      state.ratings[f.id] = 'no'; MockAPI.feedback(f.id, 'not-for-me'); removeFromDeck(f.id);
+      state.ratings[f.id] = 'no'; MockAPI.feedback(f.id, 'not-for-me');
       closeDetail(); toast('Got it. Fewer films like this', ICON.x);
       return;
     }
     case 'mix-spotify': return toast('In the full app, this mix is saved to your Spotify', ICON.note);
-    case 'deck-pass': return decide('pass');
-    case 'deck-save': return decide('save');
-    case 'deck-info': { const c = $('#deck .dcard.pos-0'); if (c) openDetail(c.dataset.id); return; }
-    case 'deck-reset': buildDeck(); dirty.tonight = true; return setTab('tonight');
+    case 'tn-swap': return tnSwap();
+    case 'tn-watch': return tnWatch();
+    case 'tn-details': return openDetail(tnFilm(state.tn.slot).id);
+    case 'tn-save': { const id = tnFilm(state.tn.slot).id; toggleSave(id); dirty.tonight = false; $('#tnSave').innerHTML = tnSaveHTML(id); return; }
+    case 'tn-change': {
+      state.tn.pick = null;
+      const el = $('#tab-tonight'); RENDER.tonight(el); el.scrollTo({ top:0 });
+      if (!reduceMotion) { const st = $('#stageRec'); st.offsetHeight; st.classList.add('enter'); }
+      return;
+    }
     case 'restart': return restart();
   }
 });
@@ -2104,10 +2201,6 @@ document.addEventListener('keydown', e => {
   const rb = e.target.closest?.('[role="button"][data-film]');
   if (rb && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openDetail(rb.dataset.film); return; }
   if (e.key === 'Escape') { if (!$('#sheetWrap').hidden) closeSheet(); else if (state.detail) closeDetail(); else if (state.forecast) closeForecast(); }
-  if (state.screen === 'app' && state.tab === 'tonight' && !state.detail && !state.forecast && $('#sheetWrap').hidden && !e.target.closest('input, [role="slider"]')) {
-    if (e.key === 'ArrowRight') decide('save');
-    if (e.key === 'ArrowLeft') decide('pass');
-  }
   if (e.target.closest('.tabbar') && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
     const i = TABS.findIndex(x => x.id === state.tab);
     const n = TABS[(i + (e.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length].id;

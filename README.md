@@ -2,7 +2,11 @@
 
 **Movies that sound like you.**
 
+The name plays on *chord* (music) and *record* (film), and the logo is a clapperboard whose clapper is a guitar neck.
+
 reChord is a mobile app that connects to your Spotify account, measures how your music *feels* (energy, mood, atmosphere, the hours you listen) and recommends films with the same emotional signature. It also forecasts how your music will feel in the coming days, so the right films are ready before you ask.
+
+This repository contains the **interactive mockup**: a clickable preview that looks and behaves like the real app, but does not actually work yet.
 
 ---
 
@@ -19,7 +23,7 @@ Both are **not implemented** in this mockup. Every recommendation, match score a
 - Builds a *Sound DNA* from your listening: energy, mood, atmosphere, genres, peak hours.
 - Recommends films whose tone, pacing and soundtrack match that profile, with a match score and a plain-language reason.
 - Picks a film for the song you are playing right now.
-- Learns from feedback: saves, passes and ratings in the swipe deck and on film pages.
+- Learns from feedback: saves, “Not tonight” swaps, the film you pick for tonight, and ratings.
 - Lets you steer tonight's list with the Tune mixer (energy, mood, atmosphere, familiar ↔ discover).
 
 ### 2. Predictive model: Mood Forecast
@@ -37,10 +41,10 @@ All screens get their data from a single object in `index.html` called **`MockAP
 | --- | --- | --- |
 | `MockAPI.forYou()` | Recommender | Top match and the themed lists on For You |
 | `MockAPI.pickForTrack(track)` | Recommender | Best film for the song playing now |
-| `MockAPI.tonight()` | Recommender | Films for the swipe deck |
+| `MockAPI.tonight()` | Recommender | Tonight's three picks (the hit, a deep cut, a wildcard) and their replacements |
 | `MockAPI.forMix(mix)` | Recommender | Ranking for a Tune mix (mock: closest preset's fixed list) |
 | `MockAPI.match(id)` | Recommender | Match score for one film |
-| `MockAPI.feedback(id, kind)` | Recommender | Receives saves, passes and ratings (mock: only counts them) |
+| `MockAPI.feedback(id, kind)` | Recommender | Receives saves, swaps, tonight's pick and ratings (mock: only counts them) |
 | `MockAPI.forecast()` | Predictive model | 7-day mood forecast with hourly curves and confidence |
 
 Replacing the body of these functions with calls to real models is enough for the screens to show real results.
@@ -56,7 +60,7 @@ Replacing the body of these functions with calls to real models is enough for th
 | Music → film | How each music trait maps to a film trait |
 | For You | Pick for the song playing now, top match, mood forecast, themed lists |
 | Mood forecast | Tonight's forecast, hourly chart with uncertainty, reasons, films ready, next 7 days |
-| Tonight | Swipe deck: right to save, left to pass |
+| Tonight | Three picks shown as records (the hit, a deep cut, a wildcard). “Not tonight” swaps one; choosing one prints a ticket with start and end time and a warm-up mix |
 | Tune | Mixing-console faders and crossfader |
 | Film detail | Match score, why it's for you, you-vs-film comparison, linked artists, a mood-setting mix |
 | Saved | Watchlist |
@@ -86,10 +90,5 @@ Film posters are generated in CSS (no copyrighted artwork is used). Artist and f
 - **Film data:** TMDB for metadata, keywords and soundtrack information.
 
 ---
-
-## Authors
-* Euthimis Popolis - 3230168
-* Vasilis Nikolaou - 3230141
-* Angelos Oikonomou - 3230146
 
 *reChord is a student project and is not affiliated with Spotify.*
